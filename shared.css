@@ -1,0 +1,54 @@
+/*
+ * [[m:user:Hoo man]]; 2013-01-13;
+ * Stylesheet for shared.js
+ */
+
+#toolLinks {
+	clear : both;
+	text-align : right;
+	margin-right : 70px;
+}
+.toolinks {
+	font-size: 12px;
+	margin-left: 0px !important;
+	margin-right: 0px !important;
+	white-space: normal !important;
+}
+.toolinks:hover {
+	text-decoration: underline !important;
+}
+.toolink_entry {
+	float : right;
+}
+.toolLinkSubField {
+	display : none;
+	background-color: white !important;
+	border-bottom: 1px solid lightgray;
+	border-left: 1px solid lightgray;
+	border-right: 1px solid lightgray;
+	margin-left: 15px;
+	text-align: left !important;
+	z-index: 1;
+	position: absolute;
+	padding: 3px !important;
+	white-space: normal !important;
+}
+.toolLinkSubRow {
+	clear: both !important;
+	list-style-type: none !important;
+	margin-left: 0px !important;
+	margin-bottom: 5px !important;
+	word-wrap: break-word !important;
+	display: list-item !important;
+	white-space: normal !important;
+}
+
+/* Move the original p-personal back right */
+#p-personal ul { 
+	float: right;
+}
+
+/* evil, for monobook */
+.skin-monobook #p-personal {
+	z-index: 2;
+}
