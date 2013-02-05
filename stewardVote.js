@@ -5,7 +5,7 @@
 *
 * use:
 
-if ( mw.config.get( 'wgPageName' ).indexOf( 'Stewards/Elections_' ) === 0 && mw.config.get( 'wgPageName' ).indexOf( '/Votes/' ) !== -1 && mw.config.get('wgUserName') !== null ) {
+if ( mw.config.get( 'wgPageName' ).indexOf( 'Stewards/Elections_' ) === 0 && mw.config.get( 'wgPageName' ).indexOf( '/Votes/' ) !== -1 && mw.config.get( 'wgUserName' ) !== null ) {
 	mw.loader.load( '//meta.wikimedia.org/w/index.php?title=User:Hoo_man/stewardVote.js&action=raw&ctype=text/javascript' );
 }
 
@@ -38,12 +38,12 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 	 * Checks that we're on the right page and whether the user is eligible to vote
 	 */
 	function main() {
-		if ( $.cookie('isEligible') === 'false' ) {
+		if ( $.cookie( 'isEligible' ) === 'false' ) {
 			onUserIsNotEligible();
 			return;
 		}
 
-		if ( $.cookie('isEligible') !== 'true' ) {
+		if ( $.cookie( 'isEligible' ) !== 'true' ) {
 			// We can (more or less) ignore failures over here and just let the user vote per hand
 			api.get( {
 				action: 'query',
@@ -330,7 +330,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 			section = 3;
 		}
 
-		voteLine = '\n# {{Se-vote|' + ( 1900 + new Date().getYear() ) + '|' + mw.config.get('wgUserName') + '|checked=|cb=}} ' + comment + ' ~~~~';
+		voteLine = '\n# {{Se-vote|' + ( 1900 + new Date().getYear() ) + '|' + mw.config.get( 'wgUserName' ) + '|checked=|cb=}} ' + comment + ' ~~~~';
 
 		// Get the page text (to detect potential double votes)
 		$.ajax( {
@@ -344,7 +344,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 		.fail( onFail )
 		.done( function( pageText ) {
 
-			if ( pageText.indexOf( '{{Se-vote|' + ( 1900 + new Date().getYear() ) + '|' + mw.config.get( 'wgUserName' ) + '|') !== -1 ) {
+			if ( pageText.indexOf( '{{Se-vote|' + ( 1900 + new Date().getYear() ) + '|' + mw.config.get( 'wgUserName' ) + '|' ) !== -1 ) {
 				if ( !confirm ( config.messages.confirmPossibleDouble ) ) {
 					$dialog.dialog( 'close' );
 					return false;
