@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 2.0.0; 2013-02-05;
+* [[m:user:Hoo man]]; Version 2.0.1; 2013-02-05;
 * Provides an easy way to vote in steward elections
 * Most up to date version can be found on https://github.com/mariushoch/MediaWiki-Helpers/blob/master/stewardVote.js
 *
@@ -18,14 +18,26 @@ if ( mw.config.get( 'wgPageName' ).indexOf( 'Stewards/Elections_' ) === 0 && mw.
 
 mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquery.spinner', 'mediawiki.api', 'user.tokens' ], function() {
 	var config = {
-			// Translations
-			lang: {},
+			// Translations (keep in synch with https://meta.wikimedia.org/w/index.php?title=MediaWiki:StewardVote/en)
+			messages: {
+				windowTitle : 'Vote!',
+				windowButton : 'Vote',
+				vote : 'Please select your vote:',
+				pleaseSelectVote : 'Please select your vote!',
+				confirmPossibleDouble : 'It appears that you have previously commented on this candidate. Are you sure you want to continue? Please strike out past votes!',
+				editError : 'Error: Reload the page (F5) and try voting again',
+				comment : 'Comment (optional):',
+				signatureAutoAdd : 'Your signature will be added automatically.',
+				yes : 'Yes',
+				no : 'No',
+				neutral : 'Neutral'
+			},
 			// To add a new translation create a page like https://meta.wikimedia.org/wiki/MediaWiki:StewardVote/en and add the new language to the var below
 			availableLangs: ['en', 'de', 'de-ch', 'de-at', 'de-formal',  'es', 'it', 'bn', 'pt', 'sr'],
 
 			// General config
-			editSummary: 'Voted ',
 
+			editSummary: 'Voted ',
 			// Minimum crosswiki edit count for eligibility
 			minEditCount: 600,
 			// Minimum local registration timestamp for eligibility
@@ -125,24 +137,27 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 			return false;
 		}
 
-		// Use the currently selected language (if avaiable), fallback to en
-		messagePage = 'MediaWiki:StewardVote/en';
+		// Use the currently selected language (if avaiable), fallback to en (which is already loaded)
 		for ( i = 0; i < config.availableLangs.length; i++ ) {
-			if ( config.availableLangs[i] === multilingual.getLanguage() ) {
+			if ( config.availableLangs[i] === multilingual.getLanguage() && multilingual.getLanguage() !== 'en' ) {
 				messagePage = 'MediaWiki:StewardVote/' + multilingual.getLanguage();
 				break;
 			}
 		}
 
-		$.ajax( {
-			url: mw.config.get( 'wgServer' ) + mw.config.get( 'wgScript' ),
-			data: {
-				title: messagePage,
-				action: 'raw'
-			},
-			cache: true
-		} )
-		.done( onMessageLoad );
+		if ( messagePage ) {
+			$.ajax( {
+				url: mw.config.get( 'wgServer' ) + mw.config.get( 'wgScript' ),
+				data: {
+					title: messagePage,
+					action: 'raw'
+				},
+				cache: true
+			} )
+			.done( onMessageLoad );
+		} else {
+			onMessageLoad();
+		}
 	}
 
 	/**
@@ -157,7 +172,10 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 	 * Called by the time the messages have been loaded successfully. Displays the vote button. Only called for eligible users
 	 */
 	function onMessageLoad( data ) {
-		config.messages = $.parseJSON( data );
+		if ( data ) {
+			$.extend( config.messages, $.parseJSON( data ) );
+		}
+
 		voteText = config.messages.windowTitle.replace( /\$1/g, mw.config.get( 'wgPageName' ).replace( /.*\//, '' ) );
 
 		var sections, i;
