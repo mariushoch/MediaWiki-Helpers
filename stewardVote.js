@@ -216,6 +216,8 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 				.replaceWith(
 					$( '<a>' )
 						.text( voteText )
+						.attr( 'href', '#' )
+						.addClass( 'wmf-steward-vote-section-link' )
 						.click( openDialog )
 				);
 		}
@@ -224,7 +226,10 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 	/**
 	 * Opens the dialog which allows users to vote
 	 */
-	function openDialog() {
+	function openDialog( event ) {
+		var preSelect;
+		event.preventDefault();
+
 		if ( $dialog && $dialog.length ) {
 			$dialog.remove();
 		}
@@ -277,6 +282,13 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 				$( '<p>' )
 					.text( config.messages.signatureAutoAdd )
 			);
+
+			// Pre select an option and enable the vote button if opened from a section link
+			if ( $( this ).hasClass( 'wmf-steward-vote-section-link' ) ) {
+				preSelect = $( this ).parent().parent().find( 'span.mw-headline' ).attr( 'id' ).toLowerCase();
+				$( '#wmf-steward-vote-' + preSelect ).attr( 'checked', 'checked' );
+				$( '#wmf-steward-vote-button' ).button( 'enable' );
+			}
 	}
 
 	/**
