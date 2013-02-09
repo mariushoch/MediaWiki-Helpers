@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 2.0.1; 2013-02-05;
+* [[m:user:Hoo man]]; Version 2.0.2; 2013-02-09;
 * Provides an easy way to vote in steward elections
 * Most up to date version can be found on https://github.com/mariushoch/MediaWiki-Helpers/blob/master/stewardVote.js
 *
