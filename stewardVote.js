@@ -238,7 +238,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 			.dialog( {
 				title: voteText,
 				width: 450,
-				height: 275,
+				height: 325,
 				resizable: true,
 				buttons: [ {
 					text: config.messages.windowButton,
@@ -268,14 +268,15 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 				$( '<br />' )
 			)
 			.append(
-				$( '<input>' )
+				$( '<textarea>' )
 					.attr( {
 						id: 'wmf-steward-vote-comment',
 						name: 'comment',
-						type: 'text'
+						type: 'text',
+						rows: 3,
 					} )
 					.css( {
-						width: '97%'
+						width: '90%'
 					} )
 			)
 			.append(
