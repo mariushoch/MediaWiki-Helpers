@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 5.1; 2013-05-24;
+* [[m:user:Hoo man]]; Version 5.2; 2013-05-24;
 *
 * Shows the number of active (one log entry in the last 7 days or as configured) sysops, uses data from the toolserver
 * Tested in IE and FF with vector and monobook, uses my (Hoo man) wiki tools (shared.js)
@@ -75,9 +75,9 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage' ],
 	 */
 	function getSysopCount( callback ) {
 		var storageKey = 'hoo-activeSysops-sysopCount',
-			data = $.jStorage.get( storageKey, false );
+			data = $.jStorage.get( storageKey, null );
 
-		if ( data ) {
+		if ( data !== null ) {
 			callback( data );
 			return;
 		}
@@ -111,9 +111,9 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage' ],
 	 */
 	function getGSWikiSet( callback ) {
 		var storageKey = 'hoo-activeSysops-GSWikiSet',
-			data = $.jStorage.get( storageKey, false );
+			data = $.jStorage.get( storageKey, null );
 
-		if ( data ) {
+		if ( data !== null ) {
 			callback( data );
 			return;
 		}
