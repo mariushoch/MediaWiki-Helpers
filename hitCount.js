@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 2.0; 2013-01-13;
+* [[m:user:Hoo man]]; Version 2.1; 2013-05-28;
 * This tool shows a link the the "Wikipedia article traffic statistics" (stats.grok.se)
 * Tested in IE and FF with vector and monobook, uses my (Hoo man) wiki tools (shared.js)
 *
@@ -58,8 +58,7 @@ mw.loader.load('//de.wikipedia.org/w/index.php?title=Benutzer:Hoo_man/hit_count.
 		}else if ( mw.config.get( 'wgWikiFamily' ) === 'wikibooks' ) {
 			suffix = '.b';
 		}else if ( mw.config.get( 'wgWikiFamily' ) === 'wikivoyage' ) {
-			// This is only proposed (bug 42055)
-			suffix = '.g';
+			suffix = '.voy';
 		}else if ( mw.config.get( 'wgWikiFamily' ) === 'wikisource' ) {
 			suffix = '.s';
 		}else if ( mw.config.get( 'wgWikiFamily' ) === 'mediawiki' ) {
