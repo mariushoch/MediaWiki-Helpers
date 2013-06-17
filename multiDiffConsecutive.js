@@ -1,6 +1,6 @@
 /**
  * View the next/ previous edit of a revision in MediaWiki multi diffs.
- * Uses the localization provided by MediaWiki!
+ * Uses the localization provided by MediaWiki, requires mediawiki.util to work.
  *
  * @author Marius Hoch < hoo@online.de >
  */
@@ -15,7 +15,7 @@
 	 *
 	 * @return {jQuery.promise}
 	 */
-	function getMessage( msg, callback ) {
+	function getMessage( msg ) {
 		return $.ajax( {
 			url: mw.util.wikiScript( 'index' ),
 			data: {
