@@ -19,7 +19,9 @@
  *
  * @author Marius Hoch < hoo@online.de >
  */
-( function( mw, $ ) {
+mw.loader.using( 'mediawiki.util', function() {
+
+$( document ).ready( function() {
 	'use strict';
 	var oldRevision, newRevision, nextRevisionText, prevRevisionText;
 
@@ -122,7 +124,7 @@
 		if ( $( '#differences-nextlink' ).length ) {
 			// Only add a separator if we already have a visible link
 			$( '#mw-diff-ntitle4' )
-				.find( 'a' )
+				.find( '#differences-nextlink' )
 				.before(
 					prevLink,
 					separator.clone()
@@ -134,5 +136,5 @@
 				);
 		}
 	}
-
-} )( mediaWiki, jQuery );
+} );
+} );
