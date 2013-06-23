@@ -73,20 +73,31 @@ mw.loader.using( ['mediawiki.util', 'mediawiki.user', 'mediawiki.api', 'jquery.s
 
 		revid = $elem.data( 'revid' );
 
-		apiRequest.post( {
-			action: 'patrol',
-			token: mw.user.tokens.get( 'patrolToken' ),
-			revid: revid
-		} )
-		.done( function() {
+		/**
+		 * Mark the entry as patrolled
+		 */
+		function markAsDone() {
 			$elem
 				.parent().parent() // <li class="not-patrolled">
 				.removeClass( 'not-patrolled' );
 			$elem
 				.parent() // <span class="instantNewPagePatrol">
 				.remove();
+		}
+
+		apiRequest.post( {
+			action: 'patrol',
+			token: mw.user.tokens.get( 'patrolToken' ),
+			revid: revid
 		} )
+		.done( markAsDone )
 		.fail( function( error, info ) {
+			if ( error === 'notpatrollable' || error === 'nosuchrevid' ) {
+				// Patrol failed with the above errors =>
+				// Can't be patrolled, so mark as already patrolled
+				markAsDone();
+				return;
+			}
 			// Something failed ... restore the link
 			$spinner.remove();
 			$elem.show();
