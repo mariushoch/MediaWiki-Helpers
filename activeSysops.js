@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 5.2; 2013-05-24;
+* [[m:user:Hoo man]]; Version 5.3; 2013-07-29;
 *
 * Shows the number of active (one log entry in the last 7 days or as configured) sysops, uses data from the toolserver
 * Tested in IE and FF with vector and monobook, uses my (Hoo man) wiki tools (shared.js)
@@ -10,7 +10,7 @@
 /*global hoo, mw, activeSysopsConfig, disable_activeSysops */
 /*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, loopfunc:true, bitwise:true, undef:true, browser:true, jquery:true, indent:4, maxerr:50, white:false */
 
-mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage' ], function() {
+mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage', 'mediawiki.api' ], function() {
 	'use strict';
 
 	// Default config
@@ -105,37 +105,37 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage' ],
 	}
 
 	/**
-	 * Get the global sysop wikiset either from cache or the TS API and call callback with it
+	 * Get the global sysop wikiset either from cache or the API and call callback with it
 	 *
 	 * @param {function} callback
 	 */
 	function getGSWikiSet( callback ) {
 		var storageKey = 'hoo-activeSysops-GSWikiSet',
-			data = $.jStorage.get( storageKey, null );
+			data = $.jStorage.get( storageKey, null ),
+			api = new mw.Api();
 
 		if ( data !== null ) {
 			callback( data );
 			return;
 		}
 
-		$.ajax( {
-			url: '//toolserver.org/~hoo/api.php',
-			data: {
-				action: 'wikiSets',
-				wikiset: 7,
-				format: 'json',
-				prop: 'ws_wikis'
-			},
-			dataType: 'jsonp'
+		api.get( {
+			action: 'query',
+			list: 'wikisets',
+			wsfrom: 'Opted-out of global sysop wikis',
+			wsprop: 'wikisincluded',
+			wslimit: 1
 		} )
 		.done( function( data ) {
-			var isGSWiki = false;
+			var isGSWiki = false,
+				wikisincluded = data.query.wikisets[0].wikisincluded,
+				wiki;
 
-			if ( data.api.error !== 'false' || !data.api.wikisets[0].ws_wikis ) {
-				return false;
-			}
-			if( $.inArray( mw.config.get( 'wgDBname' ), data.api.wikisets[0].ws_wikis ) === -1 ) {
-				isGSWiki = true;
+			for ( wiki in wikisincluded ) {
+				if ( wikisincluded[wiki] === mw.config.get( 'wgDBname' ) ) {
+					isGSWiki = true;
+					break;
+				}
 			}
 
 			$.jStorage.set( storageKey, isGSWiki );
