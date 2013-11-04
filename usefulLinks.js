@@ -1,4 +1,4 @@
-/*
+/**
 * [[m:user:Hoo man]]; Version 3.0; 2013-01-13;
 * Gives some useful links on user, user talk and user contribution pages
 * Tested in IE and FF with vector and monobook, uses my (Hoo man) wiki tools (shared.js)
@@ -33,12 +33,12 @@ mw.loader.using( [ 'mediawiki.util' ], function() {
 	tools = {
 		// Global contribs
 		globalContribs: {
-			url: '//toolserver.org/~luxo/contributions/contributions.php?blocks=true&user=$1',
+			url: '//tools.wmflabs.org/guc/?user=$1',
 			linkText: 'Global contribs'
 		},
 		// (local) contribs
 		contribs: {
-			url: mw.config.get('wgServer') + mw.config.get('wgArticlePath').replace('$1', 'Special:Contributions/') + '$1',
+			url: mw.config.get('wgServer') + mw.config.get('wgArticlePath').replace( '$1', 'Special:Contributions/' ) + '$1',
 			linkText: 'Contributions'
 		}
 	};
@@ -48,6 +48,7 @@ mw.loader.using( [ 'mediawiki.util' ], function() {
 		// SUL
 		sul: {
 			url: '//toolserver.org/~quentinv57/sulinfo/$1',
+			//url: '//tools.wmflabs.org/sulinfo/sulinfo.php?username=$1',
 			linkText: 'SUL'
 		},
 		// Central Auth
@@ -58,6 +59,7 @@ mw.loader.using( [ 'mediawiki.util' ], function() {
 		// X!'s edit counter
 		xEditCounter: {
 			url: '//toolserver.org/~tparis/pcount/index.php?name=$1&lang=$2&wiki=$3',
+			//url: '//tools.wmflabs.org/xtools/pcount/index.php?name=$1&lang=$2&wiki=$3',
 			linkText: 'X!\'s tool'
 		},
 		// User rights
