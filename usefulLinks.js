@@ -58,8 +58,7 @@ mw.loader.using( [ 'mediawiki.util' ], function() {
 		},
 		// X!'s edit counter
 		xEditCounter: {
-			url: '//toolserver.org/~tparis/pcount/index.php?name=$1&lang=$2&wiki=$3',
-			//url: '//tools.wmflabs.org/xtools/pcount/index.php?name=$1&lang=$2&wiki=$3',
+			url: '//tools.wmflabs.org/xtools/pcount/index.php?name=$1&lang=$2&wiki=$3',
 			linkText: 'X!\'s tool'
 		},
 		// User rights
