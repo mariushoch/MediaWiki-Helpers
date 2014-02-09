@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 2.0.2; 2013-02-09;
+* [[m:user:Hoo man]]; Version 2.0.3; 2014-02-09;
 * Provides an easy way to vote in steward elections
 * Most up to date version can be found on https://github.com/mariushoch/MediaWiki-Helpers/blob/master/stewardVote.js
 *
@@ -41,7 +41,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 			// Minimum crosswiki edit count for eligibility
 			minEditCount: 600,
 			// Minimum local registration timestamp for eligibility
-			minRegistration: '2012-11-01T00:00:00Z'
+			minRegistration: ( 1900 + new Date().getYear() -1 ) + '-11-01T00:00:00Z'
 		},
 		api = new mw.Api(),
 		$dialog, voteText;
@@ -238,7 +238,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 			.dialog( {
 				title: voteText,
 				width: 450,
-				height: 325,
+				height: 333,
 				resizable: true,
 				buttons: [ {
 					text: config.messages.windowButton,
