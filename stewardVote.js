@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 2.0.3; 2014-02-09;
+* [[m:user:Hoo man]]; Version 2.0.4; 2014-02-09;
 * Provides an easy way to vote in steward elections
 * Most up to date version can be found on https://github.com/mariushoch/MediaWiki-Helpers/blob/master/stewardVote.js
 *
@@ -17,7 +17,8 @@ if ( mw.config.get( 'wgPageName' ).indexOf( 'Stewards/Elections_' ) === 0 && mw.
 //<nowiki>
 
 mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquery.spinner', 'mediawiki.api', 'user.tokens' ], function() {
-	var config = {
+	var year = ( 1900 + new Date().getYear() ),
+		config = {
 			// Translations (keep in synch with https://meta.wikimedia.org/w/index.php?title=MediaWiki:StewardVote/en)
 			messages: {
 				windowTitle : 'Vote!',
@@ -41,10 +42,12 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 			// Minimum crosswiki edit count for eligibility
 			minEditCount: 600,
 			// Minimum local registration timestamp for eligibility
-			minRegistration: ( 1900 + new Date().getYear() -1 ) + '-11-01T00:00:00Z'
+			minRegistration: ( year -1 ) + '-11-01T00:00:00Z'
 		},
 		api = new mw.Api(),
-		$dialog, voteText;
+		page = mw.config.get( 'wgPageName' ),
+		user = mw.config.get( 'wgUserName' ),
+		$dialog, $voteButton, voteText;
 
 	/**
 	 * Checks that we're on the right page and whether the user is eligible to vote
@@ -61,7 +64,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 				action: 'query',
 				meta: 'globaluserinfo',
 				guiprop: 'merged|unattached',
-				guiuser: mw.config.get( 'wgUserName' )
+				guiuser: user
 			} )
 			.done( onGlobaluserinfoLoad );
 		} else {
@@ -111,7 +114,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 				}
 			);
 			onUserIsEligible();
-		}else{
+		} else {
 			// Expires after a day, cause this might change
 			$.cookie(
 				'isEligible',
@@ -129,11 +132,10 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 	 * Called after the user was verified to be eligible. Loads the messages.
 	 */
 	function onUserIsEligible() {
-		var year = 1900 + new Date().getYear(),
-			i, messagePage;
+		var i, messagePage;
 
 		// Are we on the right page?
-		if ( mw.config.get( 'wgPageName' ).indexOf( 'Stewards/Elections_' + year + '/Votes/' ) !== 0 ) {
+		if ( page.indexOf( 'Stewards/Elections_' + year + '/Votes/' ) !== 0 ) {
 			return false;
 		}
 
@@ -147,7 +149,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 
 		if ( messagePage ) {
 			$.ajax( {
-				url: mw.config.get( 'wgServer' ) + mw.config.get( 'wgScript' ),
+				url: mw.util.wikiScript(),
 				data: {
 					title: messagePage,
 					action: 'raw'
@@ -176,7 +178,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 			$.extend( config.messages, $.parseJSON( data ) );
 		}
 
-		voteText = config.messages.windowTitle.replace( /\$1/g, mw.config.get( 'wgPageName' ).replace( /.*\//, '' ) );
+		voteText = config.messages.windowTitle.replace( /\$1/g, page.replace( /.*\//, '' ) );
 
 		var sections, i;
 
@@ -284,11 +286,13 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 					.text( config.messages.signatureAutoAdd )
 			);
 
+			$voteButton = $( '#wmf-steward-vote-button' );
+
 			// Pre select an option and enable the vote button if opened from a section link
 			if ( $( this ).hasClass( 'wmf-steward-vote-section-link' ) ) {
 				preSelect = $( this ).parent().parent().find( 'span.mw-headline' ).attr( 'id' ).toLowerCase();
 				$( '#wmf-steward-vote-' + preSelect ).attr( 'checked', 'checked' );
-				$( '#wmf-steward-vote-button' ).button( 'enable' );
+				$voteButton.button( 'enable' );
 			}
 	}
 
@@ -305,7 +309,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 			} )
 			.one( 'click', function() {
 				// Enable the vote button by the time the user selects an option
-				$( '#wmf-steward-vote-button' ).button( 'enable' );
+				$voteButton.button( 'enable' );
 			} )
 			.after(
 				$( '<label>' )
@@ -328,7 +332,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 		 */
 		function onFail() {
 			$spinner.remove();
-			$( '#wmf-steward-vote-button' ).show();
+			$voteButton.show();
 			alert( config.messages.editError );
 		}
 
@@ -347,7 +351,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 		}
 
 		$spinner = $.createSpinner();
-		$( '#wmf-steward-vote-button' )
+		$voteButton
 			.hide()
 			.after( $spinner );
 
@@ -361,13 +365,13 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 			section = 3;
 		}
 
-		voteLine = '\n# {{Se-vote|' + ( 1900 + new Date().getYear() ) + '|' + mw.config.get( 'wgUserName' ) + '|checked=|cb=}} ' + comment + ' ~~~~';
+		voteLine = '\n# {{Se-vote|' + year + '|' + user + '|checked=|cb=}} ' + comment + ' ~~~~';
 
 		// Get the page text (to detect potential double votes)
 		$.ajax( {
-			url: mw.config.get( 'wgServer' ) + mw.config.get( 'wgScript' ),
+			url: mw.util.wikiScript(),
 			data: {
-				title: mw.config.get( 'wgPageName' ),
+				title: page,
 				action: 'raw'
 			},
 			cache: false
@@ -375,7 +379,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 		.fail( onFail )
 		.done( function( pageText ) {
 
-			if ( pageText.indexOf( '{{Se-vote|' + ( 1900 + new Date().getYear() ) + '|' + mw.config.get( 'wgUserName' ) + '|' ) !== -1 ) {
+			if ( pageText.indexOf( '{{Se-vote|' + year + '|' + user + '|' ) !== -1 ) {
 				if ( !confirm ( config.messages.confirmPossibleDouble ) ) {
 					$dialog.dialog( 'close' );
 					return false;
@@ -384,7 +388,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 
 			api.post( {
 				action: 'edit',
-				title: mw.config.get( 'wgPageName' ),
+				title: page,
 				appendtext: voteLine,
 				section: section,
 				summary: config.editSummary + vote,
@@ -392,7 +396,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 			} )
 			.done( function() {
 				// Just reload the page
-				window.location.href = mw.config.get( 'wgServer' ) + mw.config.get( 'wgArticlePath' ).replace( /\$1/, mw.config.get( 'wgPageName' ) );
+				window.location.href = mw.util.getUrl( page );
 			} )
 			.fail( onFail );
 		} );
