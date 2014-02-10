@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 2.0.4; 2014-02-09;
+* [[m:user:Hoo man]]; Version 2.0.5; 2014-02-11;
 * Provides an easy way to vote in steward elections
 * Most up to date version can be found on https://github.com/mariushoch/MediaWiki-Helpers/blob/master/stewardVote.js
 *
@@ -17,6 +17,8 @@ if ( mw.config.get( 'wgPageName' ).indexOf( 'Stewards/Elections_' ) === 0 && mw.
 //<nowiki>
 
 mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquery.spinner', 'mediawiki.api', 'user.tokens' ], function() {
+	'use strict';
+
 	var year = ( 1900 + new Date().getYear() ),
 		config = {
 			// Translations (keep in synch with https://meta.wikimedia.org/w/index.php?title=MediaWiki:StewardVote/en)
@@ -132,7 +134,14 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 	 * Called after the user was verified to be eligible. Loads the messages.
 	 */
 	function onUserIsEligible() {
-		var i, messagePage;
+		var i, messagePage, lang;
+
+		if ( typeof multilingual === 'object' ) {
+			lang = multilingual.getLanguage();
+		} else {
+			// Fallback to the user interface language if multilingual hasn't yet been loaded
+			lang = mw.user.options.get( 'language' );
+		}
 
 		// Are we on the right page?
 		if ( page.indexOf( 'Stewards/Elections_' + year + '/Votes/' ) !== 0 ) {
@@ -141,8 +150,8 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 
 		// Use the currently selected language (if avaiable), fallback to en (which is already loaded)
 		for ( i = 0; i < config.availableLangs.length; i++ ) {
-			if ( config.availableLangs[i] === multilingual.getLanguage() && multilingual.getLanguage() !== 'en' ) {
-				messagePage = 'MediaWiki:StewardVote/' + multilingual.getLanguage();
+			if ( config.availableLangs[i] === lang && lang !== 'en' ) {
+				messagePage = 'MediaWiki:StewardVote/' + lang;
 				break;
 			}
 		}
@@ -229,6 +238,8 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 	 * Opens the dialog which allows users to vote
 	 */
 	function openDialog( event ) {
+		/*jshint validthis:true */
+
 		var preSelect;
 		event.preventDefault();
 
