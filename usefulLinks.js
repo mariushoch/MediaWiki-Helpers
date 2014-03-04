@@ -47,8 +47,7 @@ mw.loader.using( [ 'mediawiki.util' ], function() {
 	userTools = {
 		// SUL
 		sul: {
-			url: '//toolserver.org/~quentinv57/sulinfo/$1',
-			//url: '//tools.wmflabs.org/sulinfo/sulinfo.php?username=$1',
+			url: '//tools.wmflabs.org/quentinv57-tools/tools/sulinfo.php?username=$1',
 			linkText: 'SUL'
 		},
 		// Central Auth
