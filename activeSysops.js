@@ -35,7 +35,7 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage', '
 
 		hoo.addToolLink(
 			msg,
-			'//toolserver.org/~pathoschild/stewardry/?wiki=' + mw.config.get( 'wgDBname' ) + '_p&sysop=on&bureaucrat=on',
+			'//tools.wmflabs.org/pathoschild-contrib/stewardry/index.php?wiki=' + mw.config.get( 'wgDBname' ) + '&sysop=1',
 			'',
 			config.toolLinkMethod
 		);
