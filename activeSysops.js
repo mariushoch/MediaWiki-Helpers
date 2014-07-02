@@ -1,7 +1,7 @@
 /*
-* [[m:user:Hoo man]]; Version 5.3; 2013-07-29;
+* [[m:user:Hoo man]]; Version 5.3.1; 2014-07-02;
 *
-* Shows the number of active (one log entry in the last 7 days or as configured) sysops, uses data from the toolserver
+* Shows the number of active (one log entry in the last 7 days or as configured) sysops, uses data from tool labs
 * Tested in IE and FF with vector and monobook, uses my (Hoo man) wiki tools (shared.js)
 *
 * DO NOT COPY AND PASTE, instead see https://meta.wikimedia.org/wiki/User:Hoo_man/Scripts/Active_sysops
@@ -83,20 +83,20 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage', '
 		}
 
 		$.ajax( {
-			url: '//toolserver.org/~hoo/api.php',
+			url: '//tools.wmflabs.org/hoo/api.php',
 			data: {
 				action: 'activeSysops',
 				wiki: mw.config.get( 'wgDBname' ) + '_p',
 				format: 'json',
-				last_action: config.lastAction
+				lastAction: config.lastAction
 			},
 			dataType: 'jsonp'
 		} )
 		.done( function( data ) {
-			if ( data.api.error !== 'false' ) {
+			if ( typeof data.count !== 'number' ) {
 				return;
 			}
-			$.jStorage.set( storageKey, data.api.activesysops.count );
+			$.jStorage.set( storageKey, data.count );
 			// Expire after 25h
 			$.jStorage.setTTL( storageKey, 25 * 3600 * 1000 );
 
@@ -150,6 +150,7 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage', '
 	 * Init code
 	 */
 	function init() {
+		/* jshint camelcase:false */
 		var lang;
 
 		if ( typeof disable_activeSysops !== 'undefined' && disable_activeSysops ) {
