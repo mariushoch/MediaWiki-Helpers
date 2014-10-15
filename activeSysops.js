@@ -1,8 +1,11 @@
 /*
-* [[m:user:Hoo man]]; Version 5.3.1-2; 2014-10-15;
+* [[m:user:Hoo man]]; Version 5.3.1-3; 2014-10-15;
 *
-* Shows the number of active (one log entry in the last 7 days or as configured) sysops, uses data from tool labs
-* Tested in IE and FF with vector and monobook, uses my (Hoo man) wiki tools (shared.js)
+* Shows the number of active (one log entry in the last 7 days or as configured) administrators.
+* Uses data from tool labs.
+*
+* Latest version can be found at https://github.com/mariushoch/MediaWiki-Helpers/ (If you want to
+* make changes, please submit a pull request there).
 *
 * DO NOT COPY AND PASTE, instead see https://meta.wikimedia.org/wiki/User:Hoo_man/Scripts/Active_sysops
 */
@@ -35,7 +38,7 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage', '
 
 		hoo.addToolLink(
 			msg,
-			'//tools.wmflabs.org/pathoschild-contrib/stewardry/index.php?wiki=' + mw.config.get( 'wgDBname' ) + '&sysop=1',
+			'//tools.wmflabs.org/meta/stewardry/?wiki=' + mw.config.get( 'wgDBname' ) + '&sysop=1',
 			'',
 			config.toolLinkMethod
 		);
