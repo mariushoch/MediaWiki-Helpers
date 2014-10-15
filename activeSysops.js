@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 5.3.1-1; 2014-10-15;
+* [[m:user:Hoo man]]; Version 5.3.1-2; 2014-10-15;
 *
 * Shows the number of active (one log entry in the last 7 days or as configured) sysops, uses data from tool labs
 * Tested in IE and FF with vector and monobook, uses my (Hoo man) wiki tools (shared.js)
@@ -182,7 +182,7 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage', '
 			} );
 		} else {
 			mw.messages.set( {
-				'hoo-activeSysops-toolbarText': '$1 active sysop{{PLURAL:$1||s}}',
+				'hoo-activeSysops-toolbarText': '$1 active administrator{{PLURAL:$1||s}}',
 				'hoo-activeSysops-GSWiki': 'Global sysop wiki'
 			} );
 		}
