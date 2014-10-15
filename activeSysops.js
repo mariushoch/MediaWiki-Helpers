@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 5.3.1; 2014-07-02;
+* [[m:user:Hoo man]]; Version 5.3.1-1; 2014-10-15;
 *
 * Shows the number of active (one log entry in the last 7 days or as configured) sysops, uses data from tool labs
 * Tested in IE and FF with vector and monobook, uses my (Hoo man) wiki tools (shared.js)
@@ -174,6 +174,11 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage', '
 			mw.messages.set( {
 				'hoo-activeSysops-toolbarText': '$1 aktive{{PLURAL:$1|r|}} Administrator{{PLURAL:$1||en}}',
 				'hoo-activeSysops-GSWiki': 'Globales Administratoren wiki'
+			} );
+		} else if ( lang === 'ko' ) {
+			mw.messages.set( {
+				'hoo-activeSysops-toolbarText': '$1 명의 활동하는 관리자',
+				'hoo-activeSysops-GSWiki': '전역 관리자 위키'
 			} );
 		} else {
 			mw.messages.set( {
