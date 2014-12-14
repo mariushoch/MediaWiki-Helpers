@@ -40,6 +40,8 @@ if ( typeof hoo.instances === 'undefined' ) {
 	taggerDefaultConfig.editSummary[taggerDefaultConfig.tags[3]] = '+ delete';
 	taggerDefaultConfig.tags[4] = '{{delete|Blanked by author - ~~~~}}';
 	taggerDefaultConfig.editSummary[taggerDefaultConfig.tags[4]] = '+ delete';
+	taggerDefaultConfig.tags[5] = '{{delete|No useful content - ~~~~}}';
+	taggerDefaultConfig.editSummary[taggerDefaultConfig.tags[5]] = '+ delete';
 
 	if ( typeof window.taggerConfig !== 'undefined' ) {
 		taggerConfig = window.taggerConfig;
