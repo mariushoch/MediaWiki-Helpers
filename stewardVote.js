@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 2.0.6; 2015-02-08;
+* [[m:user:Hoo man]]; Version 2.0.7; 2015-02-08;
 * Provides an easy way to vote in steward elections
 * Most up to date version can be found on https://github.com/mariushoch/MediaWiki-Helpers/blob/master/stewardVote.js
 *
@@ -36,7 +36,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 				neutral : 'Neutral'
 			},
 			// To add a new translation create a page like https://meta.wikimedia.org/wiki/MediaWiki:StewardVote/en and add the new language to the var below
-			availableLangs: ['en', 'de', 'de-ch', 'de-at', 'de-formal', 'el', 'es', 'fi', 'fr', 'it', 'bg', 'bn', 'pl', 'pt', 'ru', 'sr', 'tr', 'uk'],
+			availableLangs: ['en', 'de', 'de-ch', 'de-at', 'de-formal', 'el', 'es', 'fi', 'fr', 'it', 'bg', 'bn', 'id', 'ka', 'nl', 'pl', 'pt', 'ru', 'sr', 'tr', 'uk'],
 
 			// General config
 
