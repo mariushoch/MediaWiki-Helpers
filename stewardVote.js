@@ -16,7 +16,7 @@ if ( mw.config.get( 'wgPageName' ).indexOf( 'Stewards/Elections_' ) === 0 && mw.
 
 //<nowiki>
 
-mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquery.spinner', 'mediawiki.api', 'user.tokens' ], function() {
+mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquery.spinner', 'mediawiki.api', 'user.tokens', 'json' ], function() {
 	'use strict';
 
 	var year = ( 1900 + new Date().getYear() ),
@@ -184,7 +184,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 	 */
 	function onMessageLoad( data ) {
 		if ( data ) {
-			$.extend( config.messages, $.parseJSON( data ) );
+			$.extend( config.messages, JSON.parse( data ) );
 		}
 
 		voteText = config.messages.windowTitle.replace( /\$1/g, page.replace( /.*\//, '' ) );
@@ -322,15 +322,15 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 				// Enable the vote button by the time the user selects an option
 				$voteButton.button( 'enable' );
 			} )
-			.after(
+			.add(
 				$( '<label>' )
 					.attr( {
 						'for': 'wmf-steward-vote-' + type
 					} )
 					.text( config.messages[ type ] )
 			)
-			.after(
-				$( '<br />' )
+			.add(
+				$( '<br>' )
 			);
 	}
 
