@@ -34,14 +34,14 @@ if ( typeof hoo.instances === 'undefined' ) {
 	taggerDefaultConfig.editSummary[taggerDefaultConfig.tags[1]] = '+ delete';
 	taggerDefaultConfig.tags[2] = '{{delete|no article - ~~~~}}';
 	taggerDefaultConfig.editSummary[taggerDefaultConfig.tags[2]] = '+ delete';
-	taggerDefaultConfig.tags[2] = '{{delete|spam - ~~~~}}';
-	taggerDefaultConfig.editSummary[taggerDefaultConfig.tags[2]] = '+ delete';
-	taggerDefaultConfig.tags[3] = '{{delete|nonsense (local page for a commons file) - ~~~~}}';
+	taggerDefaultConfig.tags[3] = '{{delete|spam - ~~~~}}';
 	taggerDefaultConfig.editSummary[taggerDefaultConfig.tags[3]] = '+ delete';
-	taggerDefaultConfig.tags[4] = '{{delete|Blanked by author - ~~~~}}';
+	taggerDefaultConfig.tags[4] = '{{delete|nonsense (local page for a commons file) - ~~~~}}';
 	taggerDefaultConfig.editSummary[taggerDefaultConfig.tags[4]] = '+ delete';
-	taggerDefaultConfig.tags[5] = '{{delete|No useful content - ~~~~}}';
+	taggerDefaultConfig.tags[5] = '{{delete|Blanked by author - ~~~~}}';
 	taggerDefaultConfig.editSummary[taggerDefaultConfig.tags[5]] = '+ delete';
+	taggerDefaultConfig.tags[6] = '{{delete|No useful content - ~~~~}}';
+	taggerDefaultConfig.editSummary[taggerDefaultConfig.tags[6]] = '+ delete';
 
 	if ( typeof window.taggerConfig !== 'undefined' ) {
 		taggerConfig = window.taggerConfig;
