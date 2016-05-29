@@ -4,7 +4,7 @@
 ( function( mw, $ ) {
 	'use strict';
 
-	if ( mw.config.get( 'wgAction' ) !== 'delete'  ) {
+	if ( mw.config.get( 'wgAction' ) !== 'delete' || mw.util.$content.find( '#mw-returnto' ).length ) {
 		return;
 	}
 
@@ -26,15 +26,16 @@
 				.attr( 'id', 'inline-what-links-here' )
 				.attr( 'style', 'width: 100%; height: 200px; resize: vertical; overflow-x: hidden; overflow-y: scroll;' );
 			$whatLinksHereHead =  $( '<h2>' ).text( $( '#t-whatlinkshere' ).text() );
+
+			getWhatLinksHere( pageName )
+			.done( function( $whatLinksHere ) {
+				$whatLinksHere.appendTo( $whatLinksHereDiv );
+			} );
 		}
 
 		getHistory( pageName )
 		.done( function( $pageHistory ) {
 			$pageHistory.appendTo( $historyDiv );
-		} );
-		getWhatLinksHere( pageName )
-		.done( function( $whatLinksHere ) {
-			$whatLinksHere.appendTo( $whatLinksHereDiv );
 		} );
 
 		mw.util.$content
