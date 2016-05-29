@@ -4,11 +4,16 @@
 ( function( mw, $ ) {
 	'use strict';
 
-	if ( mw.config.get( 'wgAction' ) !== 'delete' || mw.util.$content.find( '#mw-returnto' ).length ) {
+	if ( mw.config.get( 'wgAction' ) !== 'delete' ) {
 		return;
 	}
 
 	function main() {
+		if ( mw.util.$content.find( '#mw-returnto' ).length ) {
+			// Post-delete confirmation
+			return;
+		}
+
 		var pageName = mw.config.get( 'wgPageName' ),
 			$historyDiv,
 			$historyHead,
