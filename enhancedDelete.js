@@ -69,17 +69,32 @@
 					$historyTree = $( historyTree ),
 					$pageHistory = $historyTree.find( 'ul#pagehistory' );
 
+				// Remove superfluous elements
 				$pageHistory.find( 'input' ).remove();
 				$pageHistory.find( '.mw-rollback-link' ).remove();
 				$pageHistory.find( '.mw-history-undo' ).remove();
 				$pageHistory.find( '.mw-thanks-thank-link' ).remove();
+
+				// Remove FlaggedRevs stuff
+				$pageHistory.find( '.fr-hist-basic-auto' ).remove();
+				$pageHistory.find( '.fr-hist-basic-user' ).remove();
+				$pageHistory.find( '.mw-fr-hist-difflink' ).remove();
+
+				// Remove restore links (Wikidata)
 				$pageHistory.find( 'a[href*="restore="]' ).remove();
 
 				// Remove the left over stuff after the last element in each history <li>.
 				$pageHistory.find( 'li' ).each( function() {
-					var html = $( this ).html();
+					var $this = $( this ),
+						html;
 
-					$( this ).html( html.replace( />[^>]+$/, '>' ) );
+					if ( $this.children().length === 1 ) {
+						// The whole history line is wrapped (FlaggedRevs does that).
+						$this = $this.children();
+					}
+
+					html = $this.html();
+					$this.html( html.replace( />[^>]+$/, '>' ) );
 				} );
 
 				deferred.resolve( $pageHistory );
