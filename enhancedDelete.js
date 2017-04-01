@@ -135,7 +135,7 @@
 		return deferred.promise();
 	}
 
-	$( function() {
+	mw.hook( 'wikipage.content' ).add( function() {
 		mw.loader.using( 'mediawiki.util' ).done( main );
 	} );
 
