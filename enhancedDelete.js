@@ -53,7 +53,7 @@
 			.append( $historyDiv );
 
 		if ( hasWhatLinksHere ) {
-			mw.util.$content
+			$content
 				.append( $whatLinksHereHead )
 				.append( $whatLinksHereDiv );
 		}
