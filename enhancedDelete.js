@@ -130,6 +130,8 @@
 		return deferred.promise();
 	}
 
-	$( main );
+	mw.loader.using( 'mediawiki.util' ).done( function () {
+		$( main );
+	} );
 
 } )( mediaWiki, jQuery );
