@@ -15,6 +15,7 @@
 		}
 
 		var pageName = mw.config.get( 'wgPageName' ),
+			$content,
 			$historyDiv,
 			$historyHead,
 			$whatLinksHereDiv,
@@ -43,7 +44,11 @@
 			$pageHistory.appendTo( $historyDiv );
 		} );
 
-		mw.util.$content
+		$content = mw.util.$content.find( '#mw-content-text' ).length ?
+			mw.util.$content.find( '#mw-content-text' ) :
+			mw.util.$content;
+
+		$content
 			.append( $historyHead )
 			.append( $historyDiv );
 
@@ -130,8 +135,8 @@
 		return deferred.promise();
 	}
 
-	mw.loader.using( 'mediawiki.util' ).done( function () {
-		$( main );
+	$( function() {
+		mw.loader.using( 'mediawiki.util' ).done( main );
 	} );
 
 } )( mediaWiki, jQuery );
