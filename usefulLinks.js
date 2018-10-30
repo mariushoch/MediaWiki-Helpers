@@ -1,5 +1,5 @@
 /**
-* [[m:user:Hoo man]]; Version 3.0; 2013-01-13;
+* [[m:user:Hoo man]]; Version 3.1; 2018-10-30;
 * Gives some useful links on user, user talk and user contribution pages
 * Tested in IE and FF with vector and monobook, uses my (Hoo man) wiki tools (shared.js)
 *
@@ -45,11 +45,6 @@ mw.loader.using( [ 'mediawiki.util' ], function() {
 
 	// User tools for all logged-in users (can be overwritten using usefulLinksUserTools instead of userTools in your own JS)
 	userTools = {
-		// SUL
-		sul: {
-			url: '//tools.wmflabs.org/quentinv57-tools/tools/sulinfo.php?username=$1',
-			linkText: 'SUL'
-		},
 		// Central Auth
 		ca: {
 			url: '//meta.wikimedia.org/wiki/Special:CentralAuth/$1',
