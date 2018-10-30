@@ -1,5 +1,5 @@
 /**
-* [[m:user:Hoo man]]; Version 3.1; 2018-10-30;
+* [[m:user:Hoo man]]; Version 3.2; 2018-10-30;
 * Gives some useful links on user, user talk and user contribution pages
 * Tested in IE and FF with vector and monobook, uses my (Hoo man) wiki tools (shared.js)
 *
@@ -48,7 +48,7 @@ mw.loader.using( [ 'mediawiki.util' ], function() {
 		// Central Auth
 		ca: {
 			url: '//meta.wikimedia.org/wiki/Special:CentralAuth/$1',
-			linkText : 'CA'
+			linkText : 'CentralAuth'
 		},
 		// X!'s edit counter
 		xEditCounter: {
