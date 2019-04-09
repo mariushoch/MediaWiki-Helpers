@@ -83,6 +83,15 @@
 				// Remove restore links (Wikidata)
 				$pageHistory.find( 'a[href*="restore="]' ).remove();
 
+				// Remove (now) empty mw-changeslist-links
+				$pageHistory.find( 'span.mw-changeslist-links' ).each( function() {
+					var $this = $( this );
+
+					if ( $this.text() === '' ) {
+						$this.remove();
+					}
+				} );
+
 				// Remove the left over stuff after the last element in each history <li>.
 				$pageHistory.find( 'li' ).each( function() {
 					var $this = $( this ),
@@ -131,9 +140,10 @@
 	}
 
 	mw.hook( 'wikipage.content' ).add( function( $content ) {
-		mw.loader.using( 'mediawiki.util' ).done( function () {
-			main( $content );
-		} );
+		mw.loader.using( [ 'mediawiki.util', 'mediawiki.interface.helpers.styles' ] )
+			.done( function () {
+				main( $content );
+			} );
 	} );
 
 } )( mediaWiki, jQuery );
