@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 5.3.1-3; 2014-10-15;
+* [[m:user:Hoo man]]; Version 5.4.0; 2022-02-16;
 *
 * Shows the number of active (one log entry in the last 7 days or as configured) administrators.
 * Uses data from tool labs.
@@ -11,9 +11,9 @@
 */
 
 /*global hoo, mw, activeSysopsConfig, disable_activeSysops */
-/*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, loopfunc:true, bitwise:true, undef:true, browser:true, jquery:true, indent:4, maxerr:50, white:false */
+/*jshint esversion:6, forin:true, noarg:true, noempty:true, eqeqeq:true, loopfunc:true, bitwise:true, undef:true, browser:true, jquery:true, indent:4, maxerr:50, white:false */
 
-mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage', 'mediawiki.api' ], function() {
+mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'mediawiki.api' ], function() {
 	'use strict';
 
 	// Default config
@@ -78,7 +78,7 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage', '
 	 */
 	function getSysopCount( callback ) {
 		var storageKey = 'hoo-activeSysops-sysopCount',
-			data = $.jStorage.get( storageKey, null );
+			data = getLocalStorageItem( storageKey );
 
 		if ( data !== null ) {
 			callback( data );
@@ -99,11 +99,9 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage', '
 			if ( typeof data.count !== 'number' ) {
 				return;
 			}
-			$.jStorage.set( storageKey, data.count );
-			// Expire after 25h
-			$.jStorage.setTTL( storageKey, 25 * 3600 * 1000 );
+			setLocalStorageItem( storageKey, data.count );
 
-			callback( $.jStorage.get( storageKey ) );
+			callback( data.count );
 		} );
 	}
 
@@ -114,7 +112,7 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage', '
 	 */
 	function getGSWikiSet( callback ) {
 		var storageKey = 'hoo-activeSysops-GSWikiSet',
-			data = $.jStorage.get( storageKey, null ),
+			data = getLocalStorageItem( storageKey ),
 			api = new mw.Api();
 
 		if ( data !== null ) {
@@ -141,12 +139,53 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage', '
 				}
 			}
 
-			$.jStorage.set( storageKey, isGSWiki );
-			// Expire after 25h
-			$.jStorage.setTTL( storageKey, 25 * 3600 * 1000 );
+			setLocalStorageItem( storageKey, isGSWiki );
 
-			callback( $.jStorage.get( storageKey ) );
+			callback( isGSWiki );
 		} );
+	}
+
+	/**
+	 * @param {string} storageKey
+	 * @param {*} data
+	 */
+	function setLocalStorageItem( storageKey, data ) {
+		const dataJson = JSON.stringify( {
+			// Expire after 25h
+			expiry: timeSinceEpoch() + 25 * 3600 * 1000,
+			value: data.count
+		} );
+
+		try {
+			localStorage.setItem( storageKey, dataJson );
+		} catch (e) {
+			// Nothing we can do
+		}
+	}
+
+	/**
+	 * @returns {*}
+	 */
+	function getLocalStorageItem( storageKey ) {
+		const rawData = localStorage.getItem( storageKey );
+		if ( rawData === null ) {
+			return null;
+		}
+		const data = JSON.parse( rawData );
+		if ( data.expiry < timeSinceEpoch() ) {
+			// Purge the outdated entry
+			localStorage.removeItem( storageKey );
+			return null;
+		}
+
+		return data.value;
+	}
+
+	/**
+	 * @returns {number}
+	 */
+	function timeSinceEpoch() {
+		return Math.round( (new Date()).getTime() / 1000 );
 	}
 
 	/**
