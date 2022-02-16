@@ -155,6 +155,9 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'jquery.jStorage', '
 	function init() {
 		/* jshint camelcase:false */
 		var lang;
+		if (typeof hoo === 'undefined') {
+			return;
+		}
 
 		if ( typeof disable_activeSysops !== 'undefined' && disable_activeSysops ) {
 			return false;
