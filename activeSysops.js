@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 5.4.0; 2022-02-16;
+* [[m:user:Hoo man]]; Version 5.4.1; 2022-02-16;
 *
 * Shows the number of active (one log entry in the last 7 days or as configured) administrators.
 * Uses data from tool labs.
@@ -153,7 +153,7 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'mediawiki.api' ], f
 		const dataJson = JSON.stringify( {
 			// Expire after 25h
 			expiry: timeSinceEpoch() + 25 * 3600 * 1000,
-			value: data.count
+			value: data
 		} );
 
 		try {
