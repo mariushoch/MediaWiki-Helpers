@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 5.4.1; 2022-02-16;
+* [[m:user:Hoo man]]; Version 5.4.2; 2022-02-21;
 *
 * Shows the number of active (one log entry in the last 7 days or as configured) administrators.
 * Uses data from tool labs.
@@ -152,7 +152,7 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'mediawiki.api' ], f
 	function setLocalStorageItem( storageKey, data ) {
 		const dataJson = JSON.stringify( {
 			// Expire after 25h
-			expiry: timeSinceEpoch() + 25 * 3600 * 1000,
+			expiry: timeSinceEpoch() + 25 * 3600,
 			value: data
 		} );
 
@@ -172,6 +172,12 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'mediawiki.api' ], f
 			return null;
 		}
 		const data = JSON.parse( rawData );
+		if ( data.expiry > 1706742000 && ( ( new Date() ).getYear() + 1900 ) < 2024 ) {
+			// XXX: 2022-02: Due to a bug, we have these entries with expiries waaay in the future
+			// remove them.
+			localStorage.removeItem( storageKey );
+			return null;
+		}
 		if ( data.expiry < timeSinceEpoch() ) {
 			// Purge the outdated entry
 			localStorage.removeItem( storageKey );
