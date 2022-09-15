@@ -16,7 +16,7 @@ if ( mw.config.get( 'wgPageName' ).indexOf( 'Stewards/Elections_' ) === 0 && mw.
 
 //<nowiki>
 
-mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquery.spinner', 'mediawiki.api', 'user.tokens', 'json' ], function() {
+mw.loader.using( [ 'mediawiki.util', 'jquery.ui', 'jquery.cookie', 'jquery.spinner', 'mediawiki.api', 'user.options' ], function() {
 	'use strict';
 
 	var year = ( 1900 + new Date().getYear() ),
@@ -36,7 +36,8 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 				neutral : 'Neutral'
 			},
 			// To add a new translation create a page like https://meta.wikimedia.org/wiki/MediaWiki:StewardVote/en and add the new language to the var below
-			availableLangs: ['en', 'de', 'de-ch', 'de-at', 'de-formal', 'el', 'es', 'fa', 'fi', 'fr', 'it', 'bg', 'bn', 'id', 'ka', 'nl', 'pl', 'pt', 'ru', 'sr', 'ta', 'tr', 'uk'],
+			availableLangs: ['en', 'de', 'de-ch', 'de-at', 'de-formal', 'el', 'es', 'fa', 'fi', 'fr', 'it', 'bg', 'bn', 'id', 'ka', 'nl', 'pl', 'pt', 'ru', 'sr', 'ta', 'tr', 'uk', 'zh-hans', 'zh-hant'],
+
 
 			// General config
 
@@ -403,7 +404,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.cookie', 'jquer
 				appendtext: voteLine,
 				section: section,
 				summary: config.editSummary + vote,
-				token: mw.user.tokens.get( 'editToken' )
+				token: mw.user.tokens.get( 'csrfToken' )
 			} )
 			.done( function() {
 				// Just reload the page
