@@ -19,8 +19,12 @@
 			$historyHead,
 			$whatLinksHereDiv,
 			$whatLinksHereHead,
-			hasWhatLinksHere = $( '.mw-warning' ).hasClass( 'plainlinks' );
+			$warningBox = $( '.mw-message-box-warning a' ).first(),
+			hasWhatLinksHere = false;
 
+		if ( $warningBox.length ) {
+			hasWhatLinksHere = $warningBox.attr( 'href' ).endsWith( '/' + mw.config.get( 'wgTitle' ) );
+		}
 		$historyDiv = $( '<div>' )
 			.attr( 'id', 'inline-history' )
 			.attr( 'style', 'width: 100%; height: 200px; resize: vertical; overflow-x: hidden; overflow-y: scroll;' );
@@ -67,7 +71,7 @@
 			.done( function( html ) {
 				var historyTree = $.parseHTML( html ),
 					$historyTree = $( historyTree ),
-					$pageHistory = $historyTree.find( 'ul#pagehistory' );
+					$pageHistory = $historyTree.find( 'ul.mw-contributions-list' );
 
 				// Remove superfluous elements
 				$pageHistory.find( 'input' ).remove();
