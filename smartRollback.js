@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 3.1; 2022-10-15;
+* [[m:user:Hoo man]]; Version 3.2; 2022-10-15;
 * Provides several useful functions for rollback (custom edit summary, mark as bot edits and mass revert)
 * Requires rollback permissions (and 'markbotedits' for the bot option)
 * Tested in IE and FF with vector and monobook, uses my (Hoo man) wiki tools (shared.js)
@@ -167,7 +167,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui', 'jquery.spinner', 'mediawiki.a
 						click: function() { performAction( 'perHand' ); }
 					},
 					{
-						text: mw.message( 'hoo-closeButtonText' ).escaped(),
+						text: mw.message( 'hoo-smartRollback-closeButtonText' ).escaped(),
 						click: function() { $( this ).dialog( 'close' ); }
 					}
 				]
@@ -350,6 +350,7 @@ mw.messages.set( {
 	'hoo-smartRollback-confirm' : 'Do you really want to automatically rollback all pages?',
 	'hoo-smartRollback-yes' : 'Yes',
 	'hoo-smartRollback-no' : 'No',
+	'hoo-smartRollback-closeButtonText' : 'Close',
 	'hoo-smartRollback-useDefault' : 'Use the default edit summary',
 	'hoo-smartRollback-other' : 'Other ->',
 	'hoo-smartRollback-editSummaries' : [
