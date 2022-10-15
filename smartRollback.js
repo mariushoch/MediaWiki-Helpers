@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 3.0; 2013-01-13;
+* [[m:user:Hoo man]]; Version 3.1; 2022-10-15;
 * Provides several useful functions for rollback (custom edit summary, mark as bot edits and mass revert)
 * Requires rollback permissions (and 'markbotedits' for the bot option)
 * Tested in IE and FF with vector and monobook, uses my (Hoo man) wiki tools (shared.js)
@@ -10,7 +10,7 @@
 /*global hoo, mw, smartRollbackConfig, disable_smart_rollback, confirm */
 /*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true, strict:false, undef:true, unused:true, curly:true, browser:true, jquery:true, indent:4, maxerr:50, loopfunc:true, white:false */
 
-mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.spinner', 'mediawiki.api' ], function() {
+mw.loader.using( [ 'mediawiki.util', 'jquery.ui', 'jquery.spinner', 'mediawiki.api' ], function() {
 	"use strict";
 
 	var config = {
@@ -18,7 +18,7 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.spinner', 'medi
 			enableMarkbotedits : null,
 			watchPages : 'nochange',
 			oneClickBotLinks : false,
-			availableLangs : ['en', 'de', 'ja']
+			availableLangs : ['en', 'et', 'de', 'ja', 'ar']
 		},
 		lastSummary = false,
 		$dialog;
@@ -285,6 +285,9 @@ mw.loader.using( [ 'mediawiki.util', 'jquery.ui.dialog', 'jquery.spinner', 'medi
 	function init() {
 		var lang;
 		if ( typeof disable_smart_rollback !== 'undefined' && disable_smart_rollback ) {
+			return false;
+		}
+		if(typeof hoo === 'undefined') {
 			return false;
 		}
 
