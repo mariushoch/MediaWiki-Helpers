@@ -170,7 +170,7 @@ hoo.tagger = function( defaultConfig, userConfig ) {
 					click: self.readForm
 				},
 				{
-					text: self.lang( 'hoo-closeButtonText' ),
+					text: self.lang( 'hoo-tagger-closeButtonText' ),
 					click: function() { $( self.window ).dialog( 'close' ); }
 				}
 			]
@@ -506,6 +506,7 @@ mw.messages.set( {
 	'hoo-tagger-toolbarText' : 'Tag',
 	'hoo-tagger-tagSection' : 'Tag',
 	'hoo-tagger-windowTitle' : 'Page tagger',
+	'hoo-tagger-closeButtonText' : 'Close',
 	'hoo-tagger-tags' : 'Tag:',
 	'hoo-tagger-other' : 'Other -> (Please give an edit summary as well)',
 	'hoo-tagger-minor' : ' This is a minor edit',
