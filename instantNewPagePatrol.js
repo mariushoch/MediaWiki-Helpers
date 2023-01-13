@@ -1,4 +1,11 @@
 /**
+ * Do not copy and paste, instead use:
+
+mw.loader.load( '//en.wikipedia.org/w/index.php?title=User:Hoo_man/instantNewPagePatrol.js&action=raw&ctype=text/javascript' );
+
+*/
+
+/**
  * Shows one click patrol links directly on Special:NewPages
  *
  * This program is free software; you can redistribute it and/or modify
@@ -119,7 +126,7 @@ mw.loader.using( ['mediawiki.util', 'mediawiki.user', 'mediawiki.api', 'jquery.s
 				$( '<span>' )
 					.attr( 'class', 'instantNewPagePatrol' )
 					.append(
-						'[',
+						' [',
 						getPatrolLink( revid ),
 						']'
 					)
