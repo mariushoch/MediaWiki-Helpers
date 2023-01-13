@@ -1,0 +1,14 @@
+name: Check the consistency of on-wiki deployed scripts
+
+on:
+  schedule:
+    # Runs every Monday at 14:30
+    - cron: '30 14 * * 1'
+jobs:
+  build:
+    name: Consistency check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run deployConsistencyCheck
+        run: bash tests/deployConsistencyCheck

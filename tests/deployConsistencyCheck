@@ -1,0 +1,32 @@
+#!/bin/bash
+
+function fetchScript {
+	# XXX: URLs with a ? will fail, horribly
+	# shellcheck disable=SC1003
+	curl -s "$1?action=raw" | sed -e '$a\' /dev/stdin
+}
+
+basePath="$(dirname "$(dirname "$0")")"
+
+declare -A scriptToPage
+scriptToPage[activeSysops.js]='https://meta.wikimedia.org/wiki/User:Hoo_man/active_sysops.js'
+scriptToPage[enhancedDelete.js]='https://meta.wikimedia.org/wiki/User:Hoo_man/enhancedDelete.js'
+scriptToPage[instantNewPagePatrol.js]='https://en.wikipedia.org/wiki/User:Hoo_man/instantNewPagePatrol.js'
+scriptToPage[shared.js]='https://meta.wikimedia.org/w/index.php?title=User:Hoo_man/functions.js'
+scriptToPage[shared.css]='https://meta.wikimedia.org/w/index.php?title=User:Hoo_man/tool.css'
+scriptToPage[smartRollback.js]='https://meta.wikimedia.org/wiki/User:Hoo_man/smart_rollback.js'
+scriptToPage[stewardVote.js]='https://meta.wikimedia.org/w/index.php?title=User:Hoo_man/stewardVote.js'
+scriptToPage[tagger-core.js]='https://meta.wikimedia.org/w/index.php?title=User:Hoo_man/tagger-core.js'
+scriptToPage[tagger.js]='https://meta.wikimedia.org/w/index.php?title=User:Hoo_man/tagger.js'
+scriptToPage[usefulLinks.js]='https://meta.wikimedia.org/w/index.php?title=User:Hoo_man/useful_links.js'
+
+exitCode=0
+for script in "${!scriptToPage[@]}"; do
+	# XXX: Assumes scripts to have a trailing new line?!
+	if ! fetchScript "${scriptToPage[$script]}" | diff "$basePath/$script" /dev/stdin > /dev/null; then
+		exitCode=1
+		echo "Mismatch between \"$script\" and \"${scriptToPage[$script]}\"."
+	fi
+done
+
+exit "$exitCode"
