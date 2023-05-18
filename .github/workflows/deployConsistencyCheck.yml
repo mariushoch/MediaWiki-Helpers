@@ -1,6 +1,7 @@
 name: Check the consistency of on-wiki deployed scripts
 
 on:
+  push: true
   schedule:
     # Runs every Monday at 14:30
     - cron: '30 14 * * 1'
