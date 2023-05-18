@@ -1,9 +1,22 @@
 #!/bin/bash
 
+if [[ "$1" == "--help" ]]; then
+	echo "Usage: $(basename "$0") [--help] [--verbose]" >&2
+	echo >&2
+	echo -e "--verbose\tShow the full diffs.">&2
+	exit 0
+fi
+verbose=
+if [[ "$1" == "--verbose" ]]; then
+	verbose=1
+fi
+
 function fetchScript {
-	# XXX: URLs with a ? will fail, horribly
+	local separator="?"
+	[[ "$1" =~ \? ]] && separator="&"
+
 	# shellcheck disable=SC1003
-	curl -s "$1?action=raw" | sed -e '$a\' /dev/stdin
+	curl -s "$1${separator}action=raw" | sed -e '$a\' /dev/stdin
 }
 
 basePath="$(dirname "$(dirname "$0")")"
@@ -22,10 +35,12 @@ scriptToPage[usefulLinks.js]='https://meta.wikimedia.org/w/index.php?title=User:
 
 exitCode=0
 for script in "${!scriptToPage[@]}"; do
-	# XXX: Assumes scripts to have a trailing new line?!
-	if ! fetchScript "${scriptToPage[$script]}" | diff "$basePath/$script" /dev/stdin > /dev/null; then
+	pageContent="$(fetchScript "${scriptToPage[$script]}")"
+	diff="$(diff "$basePath/$script" /dev/fd/55 55<<<"$pageContent")"
+	if [[ "$diff" =~ .+ ]]; then
 		exitCode=1
 		echo "Mismatch between \"$script\" and \"${scriptToPage[$script]}\"."
+		test -n "$verbose" && echo -e "Diff:\n$diff"
 	fi
 done
 
