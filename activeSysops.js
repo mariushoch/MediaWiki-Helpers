@@ -1,5 +1,5 @@
 /*
-* [[m:user:Hoo man]]; Version 5.4.2; 2022-02-21;
+* [[m:user:Hoo man]]; Version 5.5.0; 2023-05-18;
 *
 * Shows the number of active (one log entry in the last 7 days or as configured) administrators.
 * Uses data from tool labs.
@@ -27,6 +27,32 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'mediawiki.api' ], f
 			markWikisActiveSysopsFirst : false
 		},
 		$wikiMarker, $activeSysopMarker, $GSWikiMarker;
+
+	mw.util.addCSS(
+`#wikiMarker {
+	position: absolute;
+	top: 0px;
+	margin: 5px;
+	z-index: 5;
+	font-size: 16px;
+	left: 0px;
+}
+#wikiMarker span {
+	color: white;
+	margin-left: 3px;
+	margin-right: 3px;
+	padding: 2px;
+}
+#activeSysopMarker {
+	background: url("//upload.wikimedia.org/wikipedia/commons/7/79/Button_shade.png") repeat scroll 0pt 0pt black;
+	border: 1px solid gray;
+}
+#GSWikiMarker {
+	background: url("//upload.wikimedia.org/wikipedia/commons/7/79/Button_shade.png") repeat scroll 0pt 0pt purple;
+	border: 1px solid black;
+}`
+
+	);
 
 	/**
 	 * Display the number of sysops
