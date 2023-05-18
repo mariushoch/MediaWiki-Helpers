@@ -4,32 +4,26 @@
 * PLEASE DO NOT COPY AND PASTE
 */
 
+
+/*global mw, hooConfig, hoofrConfig */
+/*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true, strict:false, undef:true, unused:true, curly:true, browser:true, jquery:true, indent:4, maxerr:50, loopfunc:true, white:false, esversion: 6 */
+
 if(typeof(hoo) === 'undefined') {
 	var hoo = {};
 }
 
-/*global mw, mediaWiki, hooConfig, hoofrConfig */
-/*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true, strict:false, undef:true, unused:true, curly:true, browser:true, jquery:true, indent:4, maxerr:50, loopfunc:true, white:false */
-
-( function( mw ) {
-	// Wiki information (WMF specific)
-	var tmp = mw.config.get( 'wgServer' ).split( '.' );
-	mw.config.set( {
-		wgWikiName: tmp[0].replace( /(https?)?\/\//, '' ),
-		wgWikiFamily: tmp[1]
-	} );
-} )( mediaWiki );
 
 // Add tool links (in p-personal) or using mw.util.addPortletLink()
 // Target can be either a link or a function
 hoo.addToolLink = function( name, target, id, method ) {
-	var h = mw.html,
-		onClickFunc;
+	const h = mw.html,
+		skin = mw.config.get( 'skin' );
+	let onClickFunc = null;
 
 	if( !method ) {
 		method = this.config.toolLinkMethod;
 	}
-	if( method === 'toolbar' && !( mw.user.options.get( 'skin' ) === 'monobook' || mw.user.options.get( 'skin' ) === 'vector' ) ) {
+	if( method === 'toolbar' && !( skin === 'monobook' || skin === 'vector' || skin === 'vector-2022' ) ) {
 		// Toolbar is only (well) working in monobook and vector so we have to use smth. else on other skins
 		method = 'p-cactions';
 	}
@@ -49,10 +43,6 @@ hoo.addToolLink = function( name, target, id, method ) {
 				.attr( 'id', 'toolLinks' )
 				.html( '<ul></ul>' )
 				.appendTo( '#p-personal' );
-			if ( $.client.profile().name === 'msie' && $.client.profile().versionBase < 9 ) {
-				// IE workaround (up to version 8)
-				mw.util.addCSS( '.toolLinkSubRow { max-width: 120px; } #toolLinks { margin-right : 80px; }' );
-			}
 		}
 		$( '<li>' )
 			.addClass( 'toolink_entry' )
@@ -79,11 +69,6 @@ hoo.addToolLink = function( name, target, id, method ) {
 // This function can add a sub link to links added with hoo.addToolLink (of course only where method = toolbar)
 // Target can be either a link or a function
 hoo.addSubLink = function( parentId, name, target, id ) {
-	if ( $.client.profile().name === 'msie' && $.client.profile().versionBase < 8 ) {
-		// Don't even try it in IE prior to version 8
-		return false;
-	}
-
 	var h = mw.html,
 		$parent = $( '#' + parentId ).parent(),
 		tmp, i, onClickFunc;
