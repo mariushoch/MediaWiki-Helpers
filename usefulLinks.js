@@ -1,5 +1,5 @@
 /**
-* [[m:user:Hoo man]]; Version 3.2; 2018-10-30;
+* [[m:user:Hoo man]]; Version 3.3; 2023-05-18;
 * Gives some useful links on user, user talk and user contribution pages
 * Tested in IE and FF with vector and monobook, uses my (Hoo man) wiki tools (shared.js)
 *
@@ -7,7 +7,7 @@
 */
 
 /*global hoo, mw, usefulLinksConfig, usefulLinksTools, usefulLinksUserTools, usefulLinksIpTools, disable_useful_links */
-/*jshint forin:false, noarg:true, noempty:true, eqeqeq:true, loopfunc:true, bitwise:true, undef:true, browser:true, jquery:true, indent:4, maxerr:50, white:false */
+/*jshint forin:false, noarg:true, noempty:true, eqeqeq:true, loopfunc:true, bitwise:true, undef:true, browser:true, jquery:true, indent:4, maxerr:50, white:false, esversion: 6 */
 
 mw.loader.using( [ 'mediawiki.util' ], function() {
 	"use strict";
@@ -66,7 +66,7 @@ mw.loader.using( [ 'mediawiki.util' ], function() {
 	ipTools = {
 		// Whois
 		whois: {
-			url: 'http://whois.domaintools.com/$1',
+			url: 'https://whois-referral.toolforge.org/gateway.py?lookup=true&ip=$1',
 			linkText: 'Whois'
 		}
 	};
@@ -152,6 +152,10 @@ mw.loader.using( [ 'mediawiki.util' ], function() {
 			);
 		}
 
+		const wgServerParts = mw.config.get( 'wgServer' ).split( '.' ),
+			wikiName = wgServerParts[0].replace( /(https?)?\/\//, '' ),
+			wikiFamily = wgServerParts[1];
+
 		// Add links
 		for ( i in tools ) {
 			if ( tools[i] === null || typeof tools[i].url === 'undefined' ) {
@@ -159,16 +163,20 @@ mw.loader.using( [ 'mediawiki.util' ], function() {
 			}
 			toolURI = tools[i].url
 				.replace( /\$1/g, username )
-				.replace( /\$2/g, mw.config.get( 'wgWikiName' ) )
-				.replace( /\$3/g, mw.config.get( 'wgWikiFamily' ) )
+				.replace( /\$2/g, wikiName )
+				.replace( /\$3/g, wikiFamily )
 				.replace( /\$4/g, mw.config.get( 'wgServer' ) + mw.config.get( 'wgScript' ) );
 
 			if ( config.useFoldedMenu && config.toolLinkMethod === 'toolbar' ) {
-				hoo.addSubLink(
-					'usefulLinksMenu',
-					tools[i].linkText,
-					toolURI
-				);
+				try {
+					hoo.addSubLink(
+						'usefulLinksMenu',
+						tools[i].linkText,
+						toolURI
+					);
+				} catch ( e ) {
+					mw.log.warn( 'Problem adding link' );
+				}
 			} else {
 				hoo.addToolLink(
 					tools[i].linkText,
