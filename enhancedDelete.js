@@ -19,11 +19,13 @@
 			$historyHead,
 			$whatLinksHereDiv,
 			$whatLinksHereHead,
-			$warningBox = $( '.mw-message-box-warning a' ).first(),
+			warningBoxLink = $( '.mw-message-box-warning a' ).first().attr( 'href' ),
 			hasWhatLinksHere = false;
 
-		if ( $warningBox.length ) {
-			hasWhatLinksHere = $warningBox.attr( 'href' ).endsWith( '/' + mw.config.get( 'wgTitle' ) );
+		if ( warningBoxLink ) {
+			// We don't know the exact localized name of Special:WhatLinksHere, thus use this as a heuristic
+			hasWhatLinksHere = warningBoxLink.includes( '/' + mw.config.get( 'wgPageName' ) ) &&
+				warningBoxLink.includes( mw.config.get( 'wgFormattedNamespaces' )[-1] );
 		}
 		$historyDiv = $( '<div>' )
 			.attr( 'id', 'inline-history' )
