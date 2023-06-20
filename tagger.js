@@ -1,33 +1,23 @@
+//<nowiki>
 /*
-* [[m:user:Hoo man]]; Version 2.0; 2013-01-13;
-* This tool can tag pages with a few clicks (which is much faster than editing the whole page per hand).
+* [[m:user:Hoo man]]; Version 1.0.1; 2016-03-20;
+* This tool can tag pages with a few clicks (which is much faster than editing the whole page per Hand).
 * Per default it is able to tag page for speedy deletion using {{delete}}, but it can be customized to use up to every template.
 * Uses tagger-core.js
-* Tested in IE and FF with vector and monobook, uses my (Hoo man) wiki tools (shared.js)
+* Tested in IE and FF with vector and monobook, uses my (Hoo man) wiki tools (functions.js)
 *
-* DO NOT COPY AND PASTE, instead see https://meta.wikimedia.org/wiki/User:Hoo_man/Scripts/Tagger
+* DO NOT COPY AND PASTE, instead see http://meta.wikimedia.org/wiki/User:Hoo_man/Scripts/Tagger
 */
-
+if(typeof(hoo) === 'undefined') {
+	var hoo = {};
+}
 /*global mediaWiki, hoo */
 /*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true, strict:true, undef:true, unused:true, curly:true, browser:true, jquery:true, indent:4, maxerr:50, loopfunc:true, white:false */
 
-//<nowiki>
-
-if ( typeof hoo === 'undefined' ) {
-	var hoo = {};
-}
-
-if ( typeof hoo.instances === 'undefined' ) {
-	hoo.instances = {};
-}
-
-( function( mw, $ ) {
+(function(mw, $) {
 	"use strict";
-
-	var taggerDefaultConfig = {},
-		taggerConfig = {};
-
-	// Templates and edit summaries
+	var taggerDefaultConfig = {};
+	//templates and edit summaries
 	taggerDefaultConfig.tags = {};
 	taggerDefaultConfig.editSummary = {};
 	taggerDefaultConfig.tags[1] = '{{delete|nonsense - ~~~~}}';
@@ -43,21 +33,26 @@ if ( typeof hoo.instances === 'undefined' ) {
 	taggerDefaultConfig.tags[6] = '{{delete|No useful content - ~~~~}}';
 	taggerDefaultConfig.editSummary[taggerDefaultConfig.tags[6]] = '+ delete';
 
-	if ( typeof window.taggerConfig !== 'undefined' ) {
-		taggerConfig = window.taggerConfig;
+	if(typeof(window.taggerConfig) === 'undefined') {
+		window.taggerConfig = {};
 	}
-
-	$.ajax( {
-		url: '//meta.wikimedia.org/w/index.php?title=User:Hoo_man/tagger-core.js&action=raw&ctype=text/javascript',
-		dataType: 'script',
-		cache: true
-	} )
-	.done(
-		function() {
-			hoo.instances.tagger = new hoo.tagger( taggerDefaultConfig, taggerConfig );
+	var init = function() {
+		$.ajax({
+			url: '//meta.wikimedia.org/w/index.php?title=User:Hoo_man/tagger-core.js&action=raw&ctype=text/javascript',
+			dataType: 'script',
+			cache: true,
+			success: function() { hoo.instances.tagger = new hoo.tagger(taggerDefaultConfig, window.taggerConfig); }
+		});
+	};
+	if(typeof(hoo.objectDiff) === 'undefined') {
+		if(typeof(hoo.load) === 'undefined') {
+			hoo.load = [ init ];
+			mw.loader.load('//meta.wikimedia.org/w/index.php?title=User:Hoo_man/functions.js&action=raw&ctype=text/javascript');		
+		}else{
+			hoo.load.push( init );   
 		}
-	);
-
-} )( mediaWiki, jQuery );
-
+	}else{
+		init();
+	}
+})(mediaWiki, jQuery);
 //</nowiki>
