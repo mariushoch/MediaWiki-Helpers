@@ -51,7 +51,6 @@ mw.loader.using( [ 'mediawiki.util', 'mediawiki.jqueryMsg', 'mediawiki.api' ], f
 	background: url("//upload.wikimedia.org/wikipedia/commons/7/79/Button_shade.png") repeat scroll 0pt 0pt purple;
 	border: 1px solid black;
 }`
-
 	);
 
 	/**
