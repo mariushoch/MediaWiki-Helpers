@@ -119,7 +119,7 @@ mw.loader.using( ['mediawiki.util', 'mediawiki.user', 'mediawiki.api', 'jquery.s
 
 			revid = mw.util.getParamValue(
 				'oldid',
-				$elem.children( 'a' ).eq(0).attr( 'href' )
+				$elem.find( 'a.mw-changeslist-date' ).eq( 0 ).attr( 'href' )
 			);
 
 			$elem.append(
