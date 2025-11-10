@@ -19,7 +19,7 @@
 			$historyHead,
 			$whatLinksHereDiv,
 			$whatLinksHereHead,
-			warningBoxLink = $( '.mw-message-box-warning a' ).first().attr( 'href' ),
+			warningBoxLink = $( '.cdx-message--warning a' ).first().attr( 'href' ),
 			hasWhatLinksHere = false;
 
 		if ( warningBoxLink ) {
